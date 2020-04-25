@@ -10,6 +10,7 @@
  * CHANGELOG
  *  1) Ian Stephenson, Initial Commit
  *  2) Ian Stephenson, altered signature of parametrized constructor
+ *  3) Ian Stephenson,
  */
 
 #ifndef CACHESIMULATOR_CACHE_H
@@ -22,7 +23,7 @@
 using namespace std;
 
 struct dataLine {
-    string dataLine;
+    string data;
     char validBit;
     char dirtyBit;
     int accessCounter;

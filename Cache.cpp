@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include "Cache.h"
 
 
@@ -39,12 +40,33 @@ Cache::Cache(int C, int B, int S, int replacement, int writeHit, int writeMiss) 
     // address width always has a hard coded value of 8 bits
     addressWidth = 8;
 
+    // calculate values for bits in cacheStore
+    int E = CalculateSetLines(C, B, S);
+    // int s = CalculateSetIndexBits(S);
+    // int b = CalculateBlockOffsetBits(B);
+    // int t = CalculateTagBits(addressWidth, s, b);
+
     /*
      * cacheStore contains a vector of vector of dataLines, each inner vector
      * is a set in the n way associative cache, so we need S inner vectors to
      * represent our associative cache
      */
     cacheStore.resize(S);
+
+    // initialize cacheStore with default cacheLines
+    for (int i = 0; i < S; ++i) {
+        for (int j = 0; j < E; ++j) {
+            // struct dataLine, signature found in Cache.h
+            dataLine defaultData;
+
+            // initialize all bits and counter to 0, push onto vector at vector[i][j]
+            defaultData.data = "00000000";
+            defaultData.validBit = '0';
+            defaultData.dirtyBit = '0';
+            defaultData.accessCounter = 0;
+            cacheStore.at(i).push_back(defaultData);
+        }
+    }
 }
 
 
