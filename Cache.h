@@ -9,7 +9,7 @@
 /*
  * CHANGELOG
  *  1) Ian Stephenson, Initial Commit
- *
+ *  2) Ian Stephenson, altered signature of parametrized constructor
  */
 
 #ifndef CACHESIMULATOR_CACHE_H
@@ -64,7 +64,7 @@ public:
     /*
      * Parametrized Constructor
      */
-    Cache(int C, int B, int S, int replacement, int writeHit, int writeMiss, int addressBits);
+    Cache(int C, int B, int S, int replacement, int writeHit, int writeMiss);
 
     /*
      * Function: CacheRead
