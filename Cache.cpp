@@ -10,6 +10,7 @@
  * CHANGELOG
  *  1) Ian Stephenson, Initial Commit
  *  2) Ian Stephenson, implemented Private Helper Functions listed in Cache.h, implemented constructors
+ *  3) Ian Stephenson, completed the parametrized constructor to initialize cacheStore vector
  */
 
 #include <iostream>

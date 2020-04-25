@@ -10,7 +10,7 @@
  * CHANGELOG
  *  1) Ian Stephenson, Initial Commit
  *  2) Ian Stephenson, altered signature of parametrized constructor
- *  3) Ian Stephenson,
+ *  3) Ian Stephenson, changed name of data member in dataLine
  */
 
 #ifndef CACHESIMULATOR_CACHE_H
