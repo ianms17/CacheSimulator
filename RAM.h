@@ -40,6 +40,18 @@ public:
      *      Read in contents form input.txt and store them into the storage vector
      */
     void InitializeRAM(const string& filename);
+
+    /*
+     * Function: MemoryView
+     *
+     */
+    void MemoryView();
+
+    /*
+     * Function: MemoryDump
+     */
+    void MemoryDump();
+
 };
 
 #endif //CACHESIMULATOR_RAM_H

@@ -92,21 +92,10 @@ public:
     void CacheView();
 
     /*
-     * Function: MemoryView
-     *
-     */
-    void MemoryView();
-
-    /*
      * Function: CacheDump
      *
      */
     void CacheDump();
-
-    /*
-     * Function: MemoryDump
-     */
-    void MemoryDump();
 
 };
 
