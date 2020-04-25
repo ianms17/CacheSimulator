@@ -9,7 +9,7 @@
 /*
  * CHANGELOG
  *  1) Ian Stephenson, Initial Commit
- *
+ *  2) Ian Stephenson, changed signature of initializeRAM to take const string&
  */
 
 #ifndef CACHESIMULATOR_RAM_H
@@ -33,15 +33,13 @@ public:
     /*
      * Function: RAM constructor, initialize vector to hold bytes
      */
-    RAM() {
-        storage.resize(256);
-    }
+    RAM();
 
     /*
      * Function: initializeRAM
      *      Read in contents form input.txt and store them into the storage vector
      */
-    void InitializeRAM(string filename);
+    void InitializeRAM(const string& filename);
 };
 
 #endif //CACHESIMULATOR_RAM_H

@@ -50,7 +50,7 @@ int main() {
     // check that no exceptions were thrown when initializing RAM from file
     try {
         RAM simRAM;
-        // simRAM.InitializeRAM(inFile);
+        simRAM.InitializeRAM(inFile);
         cout << "ram successfully initialized" << endl << endl;
     } catch (exception& e) {
         cout << "Exception Caught: Error while Initializing RAM. TERMINATING" << endl;
