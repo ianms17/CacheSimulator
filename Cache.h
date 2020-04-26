@@ -11,6 +11,7 @@
  *  1) Ian Stephenson, Initial Commit
  *  2) Ian Stephenson, altered signature of parametrized constructor
  *  3) Ian Stephenson, changed name of data member in dataLine
+ *  4) Ian Stephenson, added data members hit and miss counter, added tagBits to dataLine struct
  */
 
 #ifndef CACHESIMULATOR_CACHE_H
@@ -24,6 +25,7 @@ using namespace std;
 
 struct dataLine {
     string data;
+    string tagBits;
     char validBit;
     char dirtyBit;
     int accessCounter;
@@ -43,6 +45,8 @@ private:
     int writeHitPolicy;
     int writeMissPolicy;
     int addressWidth = 8;
+    int hitCounter;
+    int missCounter;
     vector<vector<dataLine>> cacheStore;
 
     /*
@@ -96,6 +100,7 @@ public:
      *
      */
     void CacheDump();
+
 
 };
 

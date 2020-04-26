@@ -11,6 +11,7 @@
  *  1) Ian Stephenson, Initial Commit
  *  2) Ian Stephenson, Updated main function to initialize RAM and configure cache, created
  *                     skeleton of simulate cache without the function calls
+ *  3) Ian Stephenson, added calls to cache view and dump, tested for basic functionality
  */
 
 #include <iostream>
@@ -86,11 +87,11 @@ int main() {
         cin >> wmp;
         cout << endl;
         // call parameterized constructor
-        Cache simCache(C, B, S, rp, whp, wmp);
+        // Cache simCache(C, B, S, rp, whp, wmp);
     } catch (exception& e) {
         cout << "Exception Caught: Error while configuring cache. TERMINATING" << endl;
     }
-
+    Cache simCache(C, B, S, rp, whp, wmp);
 
     /*
      * SIMULATE CACHE
@@ -111,11 +112,11 @@ int main() {
             } else if (inputVal == "cache-flush") {
                 cout << "cache_cleared" << endl;
             } else if (inputVal == "cache-view") {
-                cout << "cache_output" << endl;
+                simCache.CacheView();
             } else if (inputVal == "memory-view") {
                 cout << "memory_output" << endl;
             } else if (inputVal == "cache-dump") {
-                cout << "cache.txt holds output" << endl;
+                simCache.CacheDump();
             } else if (inputVal == "memory-dump") {
                 cout << "ram.txt holds output" << endl;
             } else if (inputVal == "quit") {

@@ -11,6 +11,7 @@
  *  1) Ian Stephenson, Initial Commit
  *  2) Ian Stephenson, implemented Private Helper Functions listed in Cache.h, implemented constructors
  *  3) Ian Stephenson, completed the parametrized constructor to initialize cacheStore vector
+ *  4) Ian Stephenson, implemented cacheView and cacheDump, tested for basic functionality but no edge cases
  */
 
 #include <iostream>
@@ -24,7 +25,7 @@
  */
 Cache::Cache()
     : cacheSize(0), dataBlockSize(0), associativity(0), replacementPolicy(0), writeHitPolicy(0),
-      writeMissPolicy(0), addressWidth(8), cacheStore(0) {}
+      writeMissPolicy(0), addressWidth(8), cacheStore(0), hitCounter(0), missCounter(0) {}
 
 /*
  * Parametrized Constructor
@@ -40,6 +41,8 @@ Cache::Cache(int C, int B, int S, int replacement, int writeHit, int writeMiss) 
 
     // address width always has a hard coded value of 8 bits
     addressWidth = 8;
+    hitCounter = 0;
+    missCounter = 0;
 
     // calculate values for bits in cacheStore
     int E = CalculateSetLines(C, B, S);
@@ -65,6 +68,7 @@ Cache::Cache(int C, int B, int S, int replacement, int writeHit, int writeMiss) 
             defaultData.validBit = '0';
             defaultData.dirtyBit = '0';
             defaultData.accessCounter = 0;
+            defaultData.tagBits = "00";
             cacheStore.at(i).push_back(defaultData);
         }
     }
@@ -101,4 +105,77 @@ int Cache::CalculateSetIndexBits(int S) {
 int Cache::CalculateSetLines(int C, int B, int S) {
     // Formula given by C = B * E * S, solving for E, E = C / (B * S)
     return ceil(C / (B * S));
+}
+
+/*
+ * CacheView
+ */
+void Cache::CacheView() {
+    cout << "cache_size:" << cacheSize << endl;
+    cout << "data_block_size:" << dataBlockSize << endl;
+    cout << "associativity:" << associativity << endl;
+    // check input values for replacement values to determine which one was used
+    if (replacementPolicy == 1) {
+        cout << "replacement_policy:random_replacement"  << endl;
+    } else if (replacementPolicy == 2) {
+        cout << "replacement_policy:least_recently_used" << endl;
+    }
+
+    // branch check for write hit policy
+    if (writeHitPolicy == 1) {
+        cout << "write_hit_policy:write_through" << endl;
+    } else if (writeHitPolicy == 2) {
+        cout << "write_hit_policy:write_back" << endl;
+    }
+
+    // branch check for write miss policy
+    if (writeMissPolicy == 1) {
+        cout << "write_miss_policy:write_allocate" << endl;
+    } else if (writeMissPolicy == 2) {
+        cout << "write_miss_policy:no_write_allocate" << endl;
+    }
+
+    cout << "number_of_cache_hits:" << hitCounter << endl;
+    cout << "number_of_cache_misses:" << missCounter << endl;
+    cout << "cache_content:" << endl;
+
+    // output loop for cache contents
+    for (int i = 0; i < associativity; ++i) {
+        for (int j = 0; j < CalculateSetLines(cacheSize, dataBlockSize, associativity); ++j) {
+            cout << cacheStore.at(i).at(j).validBit << " ";
+            cout << cacheStore.at(i).at(j).dirtyBit << " ";
+            cout << cacheStore.at(i).at(j).tagBits << " ";
+
+            // need spaces between bytes, get substrings of data string
+            string byte1 = cacheStore.at(i).at(j).data.substr(0, 2);
+            string byte2 = cacheStore.at(i).at(j).data.substr(2, 2);
+            string byte3 = cacheStore.at(i).at(j).data.substr(4, 2);
+            string byte4 = cacheStore.at(i).at(j).data.substr(6, 2);
+
+            // output the data with spaces between bytes
+            cout << byte1 << " " << byte2 << " " << byte3 << " " << byte4 << endl;
+        }
+    }
+}
+
+/*
+ * CacheDump
+ */
+void Cache::CacheDump() {
+    for (int i = 0; i < associativity; ++i) {
+        for (int j = 0; j < CalculateSetLines(cacheSize, dataBlockSize, associativity); ++j) {
+            cout << cacheStore.at(i).at(j).validBit << " ";
+            cout << cacheStore.at(i).at(j).dirtyBit << " ";
+            cout << cacheStore.at(i).at(j).tagBits << " ";
+
+            // need spaces between bytes, get substrings of data string
+            string byte1 = cacheStore.at(i).at(j).data.substr(0, 2);
+            string byte2 = cacheStore.at(i).at(j).data.substr(2, 2);
+            string byte3 = cacheStore.at(i).at(j).data.substr(4, 2);
+            string byte4 = cacheStore.at(i).at(j).data.substr(6, 2);
+
+            // output the data with spaces between bytes
+            cout << byte1 << " " << byte2 << " " << byte3 << " " << byte4 << endl;
+        }
+    }
 }
