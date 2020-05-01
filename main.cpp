@@ -20,6 +20,8 @@
 #include "RAM.h"
 #include "Cache.h"
 
+string inFile = _argv[1];
+
 /*
  * Simulate the Cache Functions
  */
@@ -38,9 +40,6 @@ void printMenu() {
 }
 
 int main() {
-
-    string inFile = "input.txt";
-
     cout << "*** Welcome to the cache simulator ***" << endl;
     cout << "initialize the RAM:" << endl;
     cout << "init-ram 0x00 0xFF" << endl;
