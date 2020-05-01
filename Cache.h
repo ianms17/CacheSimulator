@@ -44,7 +44,7 @@ private:
     int replacementPolicy;
     int writeHitPolicy;
     int writeMissPolicy;
-    int addressWidth = 8;
+    const unsigned int addressWidth = 8;
     int hitCounter;
     int missCounter;
     vector<vector<dataLine>> cacheStore;
@@ -81,7 +81,7 @@ public:
      * Function: CacheWrite
      *
      */
-    void CacheWrite();
+    void CacheWrite(string address, string data);
 
     /*
      * Function: CacheFlush

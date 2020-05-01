@@ -17,6 +17,10 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <sstream>
+#include <string>
+#include <bitset>
+#include <fstream>
 #include "Cache.h"
 
 
@@ -39,8 +43,6 @@ Cache::Cache(int C, int B, int S, int replacement, int writeHit, int writeMiss) 
     writeHitPolicy = writeHit;
     writeMissPolicy = writeMiss;
 
-    // address width always has a hard coded value of 8 bits
-    addressWidth = 8;
     hitCounter = 0;
     missCounter = 0;
 
@@ -108,6 +110,37 @@ int Cache::CalculateSetLines(int C, int B, int S) {
 }
 
 /*
+ * CacheWrite
+ */
+void Cache::CacheWrite(string address, string data) {
+    // convert address to binary
+    address = "0x" + address;
+    stringstream ss;
+    ss << hex << address;
+    string num;
+    ss >> num;
+    bitset<8> b(num);
+
+    // get tag bits, block offsets, and set index
+    int setIndex = CalculateSetIndexBits(associativity);
+    int blockOffset = CalculateBlockOffsetBits(dataBlockSize);
+    int tagBits = CalculateTagBits(addressWidth, setIndex, blockOffset);
+
+    // get string values from the address passed in
+    string tagString = num.substr(0, tagBits);
+    string setString = num.substr(tagBits, setIndex);
+
+    // output stuff
+    cout << "set:" << setString << endl;
+    cout << "tag:" << tagString << endl;
+    cout << "write-hit:no" << endl;
+    cout << "eviction-line:0" << endl;
+    cout << "ram_address:" << address << endl;
+    cout << "data:" << data << endl;
+    cout << "dirty_bit:1" << endl;
+}
+
+/*
  * CacheView
  */
 void Cache::CacheView() {
@@ -162,11 +195,14 @@ void Cache::CacheView() {
  * CacheDump
  */
 void Cache::CacheDump() {
+    ofstream ofs;
+    ofs.open("Cache.txt");
+
     for (int i = 0; i < associativity; ++i) {
         for (int j = 0; j < CalculateSetLines(cacheSize, dataBlockSize, associativity); ++j) {
-            cout << cacheStore.at(i).at(j).validBit << " ";
-            cout << cacheStore.at(i).at(j).dirtyBit << " ";
-            cout << cacheStore.at(i).at(j).tagBits << " ";
+            ofs << cacheStore.at(i).at(j).validBit << " ";
+            ofs << cacheStore.at(i).at(j).dirtyBit << " ";
+            ofs << cacheStore.at(i).at(j).tagBits << " ";
 
             // need spaces between bytes, get substrings of data string
             string byte1 = cacheStore.at(i).at(j).data.substr(0, 2);
@@ -175,7 +211,15 @@ void Cache::CacheDump() {
             string byte4 = cacheStore.at(i).at(j).data.substr(6, 2);
 
             // output the data with spaces between bytes
-            cout << byte1 << " " << byte2 << " " << byte3 << " " << byte4 << endl;
+            ofs << byte1 << " " << byte2 << " " << byte3 << " " << byte4 << endl;
         }
     }
+    ofs.close();
+}
+
+/*
+ * CacheFlush
+ */
+void Cache::CacheFlush() {
+    cacheStore.clear();
 }

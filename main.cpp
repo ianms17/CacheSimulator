@@ -49,8 +49,8 @@ int main() {
      * INITIALIZE RAM
      */
     // check that no exceptions were thrown when initializing RAM from file
+    RAM simRAM;
     try {
-        RAM simRAM;
         simRAM.InitializeRAM(inFile);
         cout << "ram successfully initialized" << endl << endl;
     } catch (exception& e) {
@@ -109,16 +109,17 @@ int main() {
                 string data;
                 cin >> address;
                 cin >> data;
+                simCache.CacheWrite(address, data);
             } else if (inputVal == "cache-flush") {
                 cout << "cache_cleared" << endl;
             } else if (inputVal == "cache-view") {
                 simCache.CacheView();
             } else if (inputVal == "memory-view") {
-                cout << "memory_output" << endl;
+                simRAM.MemoryView();
             } else if (inputVal == "cache-dump") {
                 simCache.CacheDump();
             } else if (inputVal == "memory-dump") {
-                cout << "ram.txt holds output" << endl;
+                simRAM.MemoryDump();
             } else if (inputVal == "quit") {
                 break;
             } else {
